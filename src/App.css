@@ -2,46 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme Variables */
+:root {
+  --background-color: #fef7e5;
+  --text-color: #0f172a;
+  --btn-background: #0f172a;
+  --btn-text: #ffffff;
+  --btn-hover-bg: #ffffff;
+  --btn-hover-text: #0f172a;
+  --secondary-background: #fdfaf6;
+}
+
 body {
-  background-color: black;
+  background: radial-gradient(circle at top left, var(--background-color), #f9f9f5);
+  color: var(--text-color);
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
+body.dark {
+  --background-color: #0d0d0d;
+  --text-color: #f5f5f5;
+  --btn-background: #f5f5f5;
+  --btn-text: #0d0d0d;
+  --btn-hover-bg: #1a1a1a;
+  --btn-hover-text: #f5f5f5;
+  --secondary-background: #111;
+}
+
+/* Main Layout */
 .main {
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  background-color: var(--secondary-background);
 }
 
+/* Grid Overlay */
 .main:before {
-  background: black;
-  position: absolute;
   content: "";
-  z-index: 2;
+  position: absolute;
+  z-index: 0;
   width: 100%;
   height: 100%;
   top: 0;
+  left: 0;
+  background: transparent;
 }
 
 .main:after {
   content: "";
-  background-image: url("/src/assets/grid.svg");
-  z-index: 1;
   position: absolute;
+  z-index: 0;
   width: 100%;
   height: 100%;
   top: 0;
-  opacity: 0.4;
-  filter: invert(1);
+  left: 0;
+  background-image: url("/src/assets/grid.svg");
+  background-size: cover;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+  background-color: rgba(0, 0, 0, 0.03);
+  transition: filter 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
 }
 
+body.dark .main:after {
+  filter: invert(1);
+  opacity: 0.4;
+  background-color: transparent;
+}
+
+/* Gradient Accent for Page */
 .gradient {
   height: fit-content;
   z-index: 3;
   width: 100%;
   max-width: 640px;
-  background-image: radial-gradient(
-      at 27% 37%,
-      hsla(215, 98%, 61%, 1) 0px,
-      transparent 0%
-    ),
+  background-image: radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 1) 0px, transparent 0%),
     radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 50%),
     radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 1) 0px, transparent 50%),
     radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 1) 0px, transparent 50%),
@@ -57,24 +95,28 @@ body {
   opacity: 0.15;
 }
 
-@media screen and (max-width: 640px) {
-  .main {
-    padding: 0;
-  }
+/* Headline / Logo */
+.app-name {
+  color: var(--text-color);
 }
 
-/* Tailwind Styles */
-
-.app {
-  @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
-}
-
+/* Buttons */
 .black_btn {
-  @apply rounded-full border border-black bg-black py-1.5 px-5 text-sm text-white transition-all hover:bg-white hover:text-black;
+  background-color: var(--btn-background);
+  color: var(--btn-text);
+  border: 1px solid var(--btn-background);
+  @apply rounded-full py-1.5 px-5 text-sm transition-all;
 }
 
+.black_btn:hover {
+  background-color: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
+  border-color: var(--btn-hover-bg);
+}
+
+/* Headline Text */
 .head_text {
-  @apply mt-5 text-5xl font-extrabold leading-[1.15] text-white sm:text-6xl text-center;
+  @apply text-5xl font-extrabold leading-[1.15] text-current sm:text-6xl text-center;
 }
 
 .purple_gradient {
@@ -82,30 +124,65 @@ body {
   @apply bg-clip-text text-transparent;
 }
 
+/* Description */
 .desc {
-  @apply mt-5 text-lg text-gray-400 sm:text-xl text-center max-w-2xl;
+  @apply mt-5 text-lg text-gray-600 sm:text-xl text-center max-w-2xl;
 }
 
+/* Inputs */
 .url_input {
   @apply block w-full rounded-md border border-gray-200 bg-white py-2.5 pl-10 pr-12 text-sm shadow-lg font-satoshi font-medium focus:border-black focus:outline-none focus:ring-0;
 }
 
+/* Submit Button */
 .submit_btn {
   @apply hover:border-gray-700 hover:text-gray-700 absolute inset-y-0 right-0 my-1.5 mr-1.5 flex w-10 items-center justify-center rounded border border-gray-200 font-sans text-sm font-medium text-gray-400;
 }
 
+/* Link Cards */
 .link_card {
   @apply p-3 flex justify-start items-center flex-row bg-white border border-gray-200 gap-3 rounded-lg cursor-pointer;
 }
 
+/* Copy Button */
 .copy_btn {
   @apply w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer;
 }
 
+/* Blue Text Gradient */
 .blue_gradient {
   @apply font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
 }
 
+/* Summary Box */
 .summary_box {
   @apply rounded-xl shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur p-4;
+}
+
+/* App Layout */
+.app {
+  @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
+}
+
+/* Sticky Clear Button */
+.sticky-clear-btn {
+  position: sticky;
+  bottom: 0;
+  padding: 0.5rem;
+}
+.gradient-text {
+  background: linear-gradient(126.21deg, #7c3aed, #db2777, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.drop-shadow-lg {
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+/* Mobile */
+@media screen and (max-width: 640px) {
+  .main {
+    padding: 0;
+  }
 }
